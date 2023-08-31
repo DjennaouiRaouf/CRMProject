@@ -8,11 +8,11 @@ from .models import *
 lpp=20
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ['user_id','username','phone_number','email','type','is_active','otp_enabled']
+    list_display = ['user_id','username','phone_number','email','is_active','otp_enabled']
     list_per_page = lpp
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        ('Personal Info', {'fields': ('first_name', 'last_name', 'email','phone_number','type')}),
+        ('Personal Info', {'fields': ('first_name', 'last_name', 'email','phone_number')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('2FA', {'fields': ('otp_enabled','otp_base32','otp_auth_url')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),

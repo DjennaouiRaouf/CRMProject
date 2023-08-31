@@ -66,11 +66,10 @@ class SignInView(APIView):
             email = request.data.get('email')
             first_name = request.data.get('first_name')
             last_name = request.data.get('last_name')
-            type = request.data.get('type')
             phone_number = request.data.get('phone_number')
             enable2FA=request.data.get('enable2FA')
             UserAccount.objects.create_user(username=username, password=password,
-                                                          email=email,type=type,
+                                                          email=email,
                                                           phone_number=phone_number,
                                             first_name=first_name,last_name=last_name)
             if enable2FA == "True":
@@ -82,6 +81,8 @@ class SignInView(APIView):
                 userAccount.otp_base32 = otp_base32
                 userAccount.otp_enabled = True
                 userAccount.save()
+            if enable2FA == "False":
+                return Response({'message': 'User account has  been created '}, status=status.HTTP_200_OK)
 
             return Response({'message': 'User account has been created successfully','base32': otp_base32, 'otpauth_url': otp_auth_url}, status=status.HTTP_200_OK)
         except:

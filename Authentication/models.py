@@ -9,10 +9,6 @@ from Authentication.validators import validate_lowercase
 
 
 class UserAccount(AbstractUser):
-    GENDER_CHOICES = [
-        ('Customer', 'Customer'),
-        ('Trader', 'Trader'),
-    ]
 
     username = models.CharField(
         max_length=150,
@@ -29,8 +25,7 @@ class UserAccount(AbstractUser):
         validators=[EmailValidator(message='Enter a valid email address.')]
     )
     user_id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    type=models.CharField(max_length=60, choices=GENDER_CHOICES,default=None,blank=True)
-    phone_number= PhoneNumberField(default=None,blank=True)
+    phone_number= PhoneNumberField(default=None,blank=True,null=False)
     otp_enabled = models.BooleanField(default=False)
     otp_base32 = models.CharField(max_length=255, null=True,blank=True)
     otp_auth_url = models.CharField(max_length=255, null=True,blank=True)
