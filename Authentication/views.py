@@ -38,7 +38,7 @@ class LoginView(APIView):
                                     status=status.HTTP_400_BAD_REQUEST)
 
 
-            return Response({'message': 'Login successful','uid':str(user.user_id),'type':str(user.type)}, status=status.HTTP_200_OK)
+            return Response({'message': 'Login successful','uid':str(user.user_id)}, status=status.HTTP_200_OK)
         else:
             return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -67,26 +67,32 @@ class SignInView(APIView):
             first_name = request.data.get('first_name')
             last_name = request.data.get('last_name')
             phone_number = request.data.get('phone_number')
-            enable2FA=request.data.get('enable2FA')
+
             UserAccount.objects.create_user(username=username, password=password,
                                                           email=email,
                                                           phone_number=phone_number,
                                             first_name=first_name,last_name=last_name)
-            if enable2FA == "True":
-                userAccount = UserAccount.objects.get(username=username)
-                otp_base32 = pyotp.random_base32()
-                otp_auth_url = pyotp.totp.TOTP(otp_base32).provisioning_uri(
-                    name=username, issuer_name="codepython.com")
-                userAccount.otp_auth_url = otp_auth_url
-                userAccount.otp_base32 = otp_base32
-                userAccount.otp_enabled = True
-                userAccount.save()
-            if enable2FA == "False":
-                return Response({'message': 'User account has  been created '}, status=status.HTTP_200_OK)
+            return Response({'message': 'User account has  been created '}, status=status.HTTP_200_OK)
 
-            return Response({'message': 'User account has been created successfully','base32': otp_base32, 'otpauth_url': otp_auth_url}, status=status.HTTP_200_OK)
         except:
             return Response({'message': 'User account has not been created '}, status=status.HTTP_404_NOT_FOUND)
+
+
+class Enable2FA(APIView):
+    permission_classes = []
+    def post(self,request):
+        username = request.data.get('username')
+
+        userAccount = UserAccount.objects.get(username=username)
+        otp_base32 = pyotp.random_base32()
+        otp_auth_url = pyotp.totp.TOTP(otp_base32).provisioning_uri(
+            name=username, issuer_name="codepython.com")
+        userAccount.otp_auth_url = otp_auth_url
+        userAccount.otp_base32 = otp_base32
+        userAccount.otp_enabled = True
+        userAccount.save()
+        return Response({'message': 'User account has been created successfully', 'base32': otp_base32, 'otpauth_url': otp_auth_url},
+        status=status.HTTP_200_OK)
 
 
 '''
