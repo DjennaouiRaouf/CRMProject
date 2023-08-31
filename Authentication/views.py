@@ -4,19 +4,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login,logout
 
-import pyotp as pyotp
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth import authenticate, login,logout
-
 
 from Authentication.models import *
 
 '''
 login
 This method is going to return a response
-Which contains user id and user type
+Which contains user id 
 
 '''
 class LoginView(APIView):
@@ -57,7 +51,7 @@ class LogoutView(APIView):
 '''
 Sign in
 '''
-class SignInView(APIView):
+class SignUpView(APIView):
     permission_classes = []
     def post(self,request):
         try:
@@ -77,6 +71,10 @@ class SignInView(APIView):
         except:
             return Response({'message': 'User account has not been created '}, status=status.HTTP_404_NOT_FOUND)
 
+class UserHas2FA(APIView):
+    permission_classes = []
+    def post(self,request):
+        username = request.data.get('username')
 
 class Enable2FA(APIView):
     permission_classes = []
