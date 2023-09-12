@@ -19,6 +19,7 @@ class LoginView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
         token = request.data.get('token')
+
         user = authenticate(request, username=username, password=password)
         if user is not None:
             if user.otp_enabled == False :
