@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login,logout
-
+from .Serializer import *
 
 from Authentication.models import *
 
@@ -106,3 +106,12 @@ class ChangePWDView(APIView):
         return Response({'message': 'Password successfully changed'}, status=status.HTTP_200_OK)
 
 
+class AuthWindowStyleView(APIView):
+    permission_classes = []
+    def get(self,request):
+        p = AuthWindowStyle.objects.all()
+        if p:
+            sp = AuthWindowStyleSerializer(p, many=True)
+            return Response(sp.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)

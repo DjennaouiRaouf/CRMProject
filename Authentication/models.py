@@ -45,4 +45,4 @@ class GroupUser(Group):
 
 
 class AuthWindowStyle(models.Model):
-    image= models.ImageField('/upload')
+    image= models.ImageField(upload_to='images/')

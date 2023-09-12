@@ -7,6 +7,8 @@ from .models import *
 
 lpp=20
 
+
+
 class CustomUserAdmin(UserAdmin):
     list_display = ['user_id','username','phone_number','email','is_active','otp_enabled']
     list_per_page = lpp
@@ -39,3 +41,8 @@ class CustomGroupAdmin(GroupAdmin):
 
 admin.site.unregister(Group)
 admin.site.register(GroupUser, CustomGroupAdmin)
+
+
+class AuthWindowStyleAdmin(admin.ModelAdmin):
+    list_display = ['image']
+admin.site.register(AuthWindowStyle, AuthWindowStyleAdmin)
