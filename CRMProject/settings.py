@@ -1,5 +1,4 @@
-
-
+import os
 from pathlib import Path
 
 from django.core.management.utils import get_random_secret_key
@@ -140,3 +139,8 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000'
 ]
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+

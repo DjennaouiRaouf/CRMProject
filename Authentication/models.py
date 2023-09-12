@@ -41,3 +41,8 @@ class GroupUser(Group):
     class Meta:
         verbose_name = 'Group'
         verbose_name_plural = 'Groups'
+
+
+
+class AuthWindowStyle(models.Model):
+    image= models.ImageField('/upload')
